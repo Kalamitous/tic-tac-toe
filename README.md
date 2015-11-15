@@ -1,1 +1,3 @@
-# tic-tac-toe
+# Tic-Tac-Toe
+
+Play against an AI that will not lose!
