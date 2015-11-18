@@ -185,7 +185,11 @@
                     }
                 }
             } else if (totalMoves > 3 && totalMoves % 2 == 1) {
-                if (counterCornerPattern() != false) {
+                if (makeWinningMove() != false) {
+                    document.getElementById("tile" + String(makeWinningMove())).innerText = "O";
+                } else if (blockOpponent() != false) {
+                    document.getElementById("tile" + String(blockOpponent())).innerText = "O";
+                } else if (counterCornerPattern() != false) {
                     counterCornerPattern();
                 } else {
                     basicMove();
