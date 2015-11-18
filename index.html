@@ -170,7 +170,11 @@
                     }
                 }
             } else if (totalMoves > 3 && totalMoves % 2 == 1) {
-                basicMove();
+                if (counterCornerPattern() != false) {
+                    counterCornerPattern();
+                } else {
+                    basicMove();
+                }
             }
 
             switchTurn();
@@ -268,13 +272,21 @@
             var newMove = false;
 
             if (document.getElementById("tile2").innerText == "X" && document.getElementById("tile4").innerText == "X") {
-                newMove = 1;
+                if (document.getElementById("tile1").innerText == "") {
+                    newMove = 1;
+                }
             } else if (document.getElementById("tile2").innerText == "X" && document.getElementById("tile6").innerText == "X") {
-                newMove = 3;
+                if (document.getElementById("tile3").innerText == "") {
+                    newMove = 3;
+                }
             } else if (document.getElementById("tile4").innerText == "X" && document.getElementById("tile8").innerText == "X") {
-                newMove = 7;
+                if (document.getElementById("tile7").innerText == "") {
+                    newMove = 7;
+                }
             } else if (document.getElementById("tile6").innerText == "X" && document.getElementById("tile8").innerText == "X") {
-                newMove = 9;
+                if (document.getElementById("tile9").innerText == "") {
+                    newMove = 9;
+                }
             }
 
             if (newMove != false) {
