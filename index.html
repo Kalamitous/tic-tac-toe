@@ -52,6 +52,7 @@
 
             for (var i = 1; i <= 9; i++) {
                 document.getElementById("tile" + String(i)).innerText = "";
+                document.getElementById("tile" + String(i)).style.backgroundColor = "white";
             }
         }
 
@@ -80,7 +81,7 @@
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                setTimeout(function() { resetGame(); }, 3000);
+                setTimeout(function() { resetGame(); }, 2000);
 
                 gameOver = true;
             } else if (checkWin("O")) {
@@ -88,7 +89,7 @@
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                setTimeout(function() { resetGame(); }, 3000);
+                setTimeout(function() { resetGame(); }, 2000);
 
                 gameOver = true;
             } else if (checkWin("O") == false && checkWin("X") == false && totalMoves == 9) {
@@ -96,7 +97,7 @@
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                setTimeout(function() { resetGame(); }, 3000);
+                setTimeout(function() { resetGame(); }, 2000);
 
                 gameOver = true;
             }
