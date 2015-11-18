@@ -14,10 +14,10 @@
     </style>
 
     <script>
-        var totalMoves = 0;
         var userWins = 0;
         var compWins = 0;
         var numTies = 0;
+        var totalMoves = 0;
         var gameOver = false;
 
         var winningMoves = [
@@ -35,20 +35,13 @@
 
         function startGame() {
             totalMoves = 0;
-            emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             gameOver = false;
+
+            emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
             document.turn = "X";
 
             document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
-        }
-
-        function resetGame() {
-            totalMoves = 0;
-            emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-            gameOver = false;
-
-            document.turn = "X";
 
             for (var i = 1; i <= 9; i++) {
                 document.getElementById("tile" + String(i)).innerText = "";
@@ -83,7 +76,7 @@
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                setTimeout(function() { resetGame(); }, 2000);
+                setTimeout(function() { startGame(); }, 2000);
 
                 gameOver = true;
             } else if (checkWin("O")) {
@@ -91,7 +84,7 @@
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                setTimeout(function() { resetGame(); }, 2000);
+                setTimeout(function() { startGame(); }, 2000);
 
                 gameOver = true;
             } else if (checkWin("O") == false && checkWin("X") == false && totalMoves == 9) {
@@ -99,7 +92,7 @@
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                setTimeout(function() { resetGame(); }, 2000);
+                setTimeout(function() { startGame(); }, 2000);
 
                 gameOver = true;
             }
