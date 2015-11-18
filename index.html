@@ -154,6 +154,8 @@
                         } else {
                             basicMove();
                         }
+                    } else if (counterNyla() != false) {
+                        counterNyla();
                     } else {
                         basicMove();
                     }
@@ -270,6 +272,28 @@
                 newMove = 7;
             } else if (document.getElementById("tile6").innerText == "X" && document.getElementById("tile8").innerText == "X") {
                 newMove = 9;
+            }
+
+            if (newMove != false) {
+                document.getElementById("tile" + String(newMove)).innerText = "O";
+
+                emptyTiles.splice(emptyTiles.indexOf(newMove), 1);
+            }
+
+            return newMove;
+        }
+
+        function counterNyla() {
+            var newMove = false;
+
+            if (document.getElementById("tile2").innerText == "X" && document.getElementById("tile7").innerText == "X" || document.getElementById("tile8").innerText == "X" && document.getElementById("tile1").innerText == "X") {
+                newMove = 4;
+            } else if (document.getElementById("tile2").innerText == "X" && document.getElementById("tile9").innerText == "X" || document.getElementById("tile8").innerText == "X" && document.getElementById("tile3").innerText == "X") {
+                newMove = 6;
+            } else if (document.getElementById("tile6").innerText == "X" && document.getElementById("tile1").innerText == "X" || document.getElementById("tile4").innerText == "X" && document.getElementById("tile3").innerText == "X") {
+                newMove = 2;
+            } else if (document.getElementById("tile6").innerText == "X" && document.getElementById("tile7").innerText == "X" || document.getElementById("tile4").innerText == "X" && document.getElementById("tile9").innerText == "X") {
+                newMove = 8;
             }
 
             if (newMove != false) {
