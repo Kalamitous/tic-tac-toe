@@ -9,8 +9,7 @@
             font-size: 128px;
             font-family: Verdana;
             background-color: white;
-            color: #2ecc71;
-            text-shadow: 0 0 10px #000000;
+            text-shadow: 0 0 10px #404040;
         }
     </style>
 
@@ -19,6 +18,7 @@
         var userWins = 0;
         var compWins = 0;
         var numTies = 0;
+        var gameOver = false;
 
         var winningMoves = [
             [1, 2, 3],
@@ -36,6 +36,7 @@
         function startGame() {
             totalMoves = 0;
             emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            gameOver = false;
 
             document.turn = "X";
 
@@ -45,6 +46,7 @@
         function resetGame() {
             totalMoves = 0;
             emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            gameOver = false;
 
             document.turn = "O";
 
@@ -54,17 +56,19 @@
         }
 
         function makeMove(tile) {
-            if (tile.innerText == "") {
-                tile.innerText = document.turn;
+            if (gameOver == false) {
+                if (tile.innerText == "") {
+                    tile.innerText = document.turn;
 
-                var userMove = tile.getAttribute("id");
+                    var userMove = tile.getAttribute("id");
 
-                userMove = userMove.replace("tile", "");
-                userMove = Number(userMove);
+                    userMove = userMove.replace("tile", "");
+                    userMove = Number(userMove);
 
-                switchTurn(userMove);
+                    switchTurn(userMove);
 
-                emptyTiles.splice(emptyTiles.indexOf(userMove), 1);
+                    emptyTiles.splice(emptyTiles.indexOf(userMove), 1);
+                }
             }
         }
 
@@ -76,19 +80,25 @@
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                resetGame();
+                setTimeout(function() { resetGame(); }, 3000);
+
+                gameOver = true;
             } else if (checkWin("O")) {
                 compWins = compWins + 1;
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                resetGame();
+                setTimeout(function() { resetGame(); }, 3000);
+
+                gameOver = true;
             } else if (checkWin("O") == false && checkWin("X") == false && totalMoves == 9) {
                 numTies = numTies + 1;
 
                 document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
 
-                resetGame();
+                setTimeout(function() { resetGame(); }, 3000);
+
+                gameOver = true;
             }
 
             if (document.turn == "X") {
@@ -186,6 +196,10 @@
             for (var i = 0; i < winningMoves.length; i++) {
                 if (checkRow(winningMoves[i][0], winningMoves[i][1], winningMoves[i][2], move)) {
                     win = true;
+
+                    document.getElementById("tile" + String(winningMoves[i][0])).style.backgroundColor = "#2ecc71";
+                    document.getElementById("tile" + String(winningMoves[i][1])).style.backgroundColor = "#2ecc71";
+                    document.getElementById("tile" + String(winningMoves[i][2])).style.backgroundColor = "#2ecc71";
                 }
             }
 
