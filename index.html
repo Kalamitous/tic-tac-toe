@@ -8,6 +8,9 @@
             text-align: center;
             font-size: 128px;
             font-family: Verdana;
+            background-color: white;
+            color: #2ecc71;
+            text-shadow: 0 0 10px #000000;
         }
     </style>
 
@@ -398,24 +401,28 @@
         <title>Tic-Tac-Toe</title>
     </head>
 
-    <body onload="startGame();">
-        <div id="userWins">msg</div>
+    <body onload="startGame();" style="background-color:#3498db">
+        <center style="font-family:Verdana">
+            <div id="userWins" style="color:white">msg</div>
 
-        <table border="1">
-            <tr>
-                <td id="tile1" class="tile" onclick="makeMove(this);"></td>
-                <td id="tile2" class="tile" onclick="makeMove(this);"></td>
-                <td id="tile3" class="tile" onclick="makeMove(this);"></td>
-            </tr>
-            <tr>
-                <td id="tile4" class="tile" onclick="makeMove(this);"></td>
-                <td id="tile5" class="tile" onclick="makeMove(this);"></td>
-                <td id="tile6" class="tile" onclick="makeMove(this);"></td>
-            </tr>
-            <tr>
-                <td id="tile7" class="tile" onclick="makeMove(this);"></td>
-                <td id="tile8" class="tile" onclick="makeMove(this);"></td>
-                <td id="tile9" class="tile" onclick="makeMove(this);"></td>
-            </tr>
+            <hr>
+
+            <table>
+                <tr>
+                    <td id="tile1" class="tile" onclick="makeMove(this);"></td>
+                    <td id="tile2" class="tile" onclick="makeMove(this);"></td>
+                    <td id="tile3" class="tile" onclick="makeMove(this);"></td>
+                </tr>
+                <tr>
+                    <td id="tile4" class="tile" onclick="makeMove(this);"></td>
+                    <td id="tile5" class="tile" onclick="makeMove(this);"></td>
+                    <td id="tile6" class="tile" onclick="makeMove(this);"></td>
+                </tr>
+                <tr>
+                    <td id="tile7" class="tile" onclick="makeMove(this);"></td>
+                    <td id="tile8" class="tile" onclick="makeMove(this);"></td>
+                    <td id="tile9" class="tile" onclick="makeMove(this);"></td>
+                </tr>
+            </center>
     </body>
 </html>
