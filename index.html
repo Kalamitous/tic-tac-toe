@@ -174,7 +174,9 @@
                         basicMove();
                     }
                 } else {
-                    if (counterCornerPattern() != false) {
+                    if (makeWinningMove() != false) {
+                       document.getElementById("tile" + String(makeWinningMove())).innerText = "O";
+                    } else if (counterCornerPattern() != false) {
                         counterCornerPattern();
                     } else {
                         basicMove();
