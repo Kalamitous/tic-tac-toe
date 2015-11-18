@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html>
+    <style>
+        .tile{
+            width: 256px;
+            height: 256px;
+            text-align: center;
+            font-size: 128px;
+            font-family: Verdana;
+        }
+    </style>
+
+    <script>
+        var totalMoves = 0;
+        var userWins = 0;
+        var compWins = 0;
+        var numTies = 0;
+
+        var winningMoves = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+            [1, 4, 7],
+            [2, 5, 8],
+            [3, 6, 9],
+            [1, 5, 9],
+            [3, 5, 7]
+        ];
+
+        var emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        function startGame() {
+            totalMoves = 0;
+            emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+            document.turn = "X";
+
+            document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
+        }
+
+        function resetGame() {
+            totalMoves = 0;
+            emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            
+            document.turn = "O";
+
+            for (var i = 1; i <= 9; i++) {
+                document.getElementById("tile" + String(i)).innerText = "";
+            }
+        }
+
+        function makeMove(tile) {
+            if (tile.innerText == "") {
+                tile.innerText = document.turn;
+
+                var userMove = tile.getAttribute("id");
+
+                userMove = userMove.replace("tile", "");
+                userMove = Number(userMove);
+
+                switchTurn(userMove);
+
+                emptyTiles.splice(emptyTiles.indexOf(userMove), 1);
+            }
+        }
+
+        function switchTurn(userMove) {
+            totalMoves = totalMoves + 1;
+
+            if (checkWin("X")) {
+                userWins = userWins + 1;
+
+                document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
+
+                resetGame();
+            } else if (checkWin("O")) {
+                compWins = compWins + 1;
+
+                document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
+
+                resetGame();
+            } else if (checkWin("O") == false && checkWin("X") == false && totalMoves == 9) {
+                numTies = numTies + 1;
+
+                document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
+
+                resetGame();
+            }
+
+            if (document.turn == "X") {
+                document.turn = "O";
+
+                compMove(userMove);
+            } else {
+                document.turn = "X";
+            }
+        }
+
+        function compMove(userMove) {
+            if (totalMoves == 1) {
+                if (userMove == 5) {
+                    var possibleMoves = [1, 3, 7, 9];
+
+                    var newMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+
+                    if (document.getElementById("tile" + String(newMove)).innerText == "") {
+                        document.getElementById("tile" + String(newMove)).innerText = "O";
+
+                        emptyTiles.splice(emptyTiles.indexOf(newMove), 1);
+                    } else {
+                        basicMove();
+                    }
+                } else {
+                    var newMove = 5;
+
+                    if (document.getElementById("tile" + String(newMove)).innerText == "") {
+                        document.getElementById("tile" + String(newMove)).innerText = "O";
+
+                        emptyTiles.splice(emptyTiles.indexOf(newMove), 1);
+                    } else {
+                        basicMove();
+                    }
+                }
+            } else if (totalMoves == 3) {
+                if (userMove == 1 || userMove == 3 || userMove == 7 || userMove == 9) {
+                    if (diagonalMove(userMove)) {
+                        if (document.getElementById("tile5").innerText == "O") {
+                            var possibleMoves = [2, 4, 6, 8];
+
+                            var newMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+
+                            if (document.getElementById("tile" + String(newMove)).innerText == "") {
+                                document.getElementById("tile" + String(newMove)).innerText = "O";
+
+                                emptyTiles.splice(emptyTiles.indexOf(newMove), 1);
+                            } else {
+                                basicMove();
+                            }
+                        } else {
+                            basicMove();
+                        }
+                    } else if (diagonalOpponent(userMove)) {
+                        if (document.getElementById("tile5").innerText == "X") {
+                            var nextMove = adjacentCorner(userMove)
+
+                            if (document.getElementById("tile" + String(nextMove)).innerText == "") {
+                                document.getElementById("tile" + String(nextMove)).innerText = "O";
+
+                                emptyTiles.splice(emptyTiles.indexOf(newMove), 1);
+                            } else {
+                                basicMove();
+                            }
+                        } else {
+                            basicMove();
+                        }
+                    } else {
+                        basicMove();
+                    }
+                } else {
+                    basicMove();
+                }
+            } else if (totalMoves > 3 && totalMoves % 2 == 1) {
+                basicMove();
+            }
+
+            switchTurn();
+        }
+
+        function checkWin(move) {
+            var win = false;
+
+            for (var i = 0; i < winningMoves.length; i++) {
+                if (checkRow(winningMoves[i][0], winningMoves[i][1], winningMoves[i][2], move)) {
+                    win = true;
+                }
+            }
+
+            return win;
+        }
+
+        function checkRow(a, b, c, move) {
+            var win = false;
+
+            if (getMove(a) == move && getMove(b) == move && getMove(c) == move) {
+                win = true;
+            }
+
+            return win;
+        }
+
+        function getMove(tileNum) {
+            return document.getElementById("tile" + tileNum).innerText;
+        }
+
+        function diagonalMove(tileNum) {
+            var diagonalTile = false;
+
+            if (tileNum == 1) {
+                if (document.getElementById("tile9").innerText == "X") {
+                    diagonalTile = true;
+                }
+            } else if (tileNum == 9) {
+                if (document.getElementById("tile1").innerText == "X") {
+                    diagonalTile = true;
+                }
+            } else if (tileNum == 3) {
+                if (document.getElementById("tile7").innerText == "X") {
+                    diagonalTile = true;
+                }
+            } else if (tileNum == 7) {
+                if (document.getElementById("tile3").innerText == "X") {
+                    diagonalTile = true;
+                }
+            }
+
+            return diagonalTile;
+        }
+
+        function diagonalOpponent(tileNum) {
+            var diagonalTile = false;
+
+            if (tileNum == 1) {
+                if (document.getElementById("tile9").innerText == "O") {
+                    diagonalTile = true;
+                }
+            } else if (tileNum == 9) {
+                if (document.getElementById("tile1").innerText == "O") {
+                    diagonalTile = true;
+                }
+            } else if (tileNum == 3) {
+                if (document.getElementById("tile7").innerText == "O") {
+                    diagonalTile = true;
+                }
+            } else if (tileNum == 7) {
+                if (document.getElementById("tile3").innerText == "O") {
+                    diagonalTile = true;
+                }
+            }
+
+            return diagonalTile;
+        }
+
+        function adjacentCorner(tileNum) {
+            var possibleMoves;
+            var adjacentTile;
+
+            if (tileNum == 1 || tileNum == 9) {
+                possibleMoves = [3, 7];
+            } else if (tileNum == 3 || tileNum == 7) {
+                possibleMoves = [1, 9];
+            }
+
+            adjacentTile = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+            return adjacentTile;
+        }
+
+        function makeWinningMove() {
+            var nextMove = false;
+
+            for (var i = 0; i < winningMoves.length; i++) {
+                if (document.getElementById("tile" + String(winningMoves[i][0])).innerText == "O" && document.getElementById("tile" + String(winningMoves[i][1])).innerText == "O") {
+                    if (document.getElementById("tile" + String(winningMoves[i][2])).innerText == "") {
+                        nextMove = winningMoves[i][2];
+                    }
+                } else if (document.getElementById("tile" + String(winningMoves[i][1])).innerText == "O" && document.getElementById("tile" + String(winningMoves[i][2])).innerText == "O") {
+                    if (document.getElementById("tile" + String(winningMoves[i][0])).innerText == "") {
+                        nextMove = winningMoves[i][0];
+                    }
+                } else if (document.getElementById("tile" + String(winningMoves[i][0])).innerText == "O" && document.getElementById("tile" + String(winningMoves[i][2])).innerText == "O") {
+                    if (document.getElementById("tile" + String(winningMoves[i][1])).innerText == "") {
+                        nextMove = winningMoves[i][1];
+                    }
+                }
+            }
+
+            if (nextMove != false) {
+                if (document.getElementById("tile" + String(nextMove)).innerText != "") {
+                    nextMove = false;
+                }
+            }
+
+            return nextMove;
+
+            if (nextMove != false) {
+                emptyTiles.splice(emptyTiles.indexOf(nextMove), 1);
+            }
+        }
+
+        function blockOpponent() {
+            var nextMove = false;
+
+            for (var i = 0; i < winningMoves.length; i++) {
+                if (document.getElementById("tile" + String(winningMoves[i][0])).innerText == "X" && document.getElementById("tile" + String(winningMoves[i][1])).innerText == "X") {
+                    if (document.getElementById("tile" + String(winningMoves[i][2])).innerText == "") {
+                        nextMove = winningMoves[i][2];
+                    }
+                } else if (document.getElementById("tile" + String(winningMoves[i][1])).innerText == "X" && document.getElementById("tile" + String(winningMoves[i][2])).innerText == "X") {
+                    if (document.getElementById("tile" + String(winningMoves[i][0])).innerText == "") {
+                        nextMove = winningMoves[i][0];
+                    }
+                } else if (document.getElementById("tile" + String(winningMoves[i][0])).innerText == "X" && document.getElementById("tile" + String(winningMoves[i][2])).innerText == "X") {
+                    if (document.getElementById("tile" + String(winningMoves[i][1])).innerText == "") {
+                        nextMove = winningMoves[i][1];
+                    }
+                }
+            }
+
+            if (nextMove != false) {
+                if (document.getElementById("tile" + String(nextMove)).innerText != "") {
+                    nextMove = false;
+                }
+            }
+
+            return nextMove;
+
+            if (nextMove != false) {
+                emptyTiles.splice(emptyTiles.indexOf(nextMove), 1);
+            }
+        }
+
+        function makeRandomMove() {
+            var num = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+
+            if (document.getElementById("tile" + String(num)).innerText == "") {
+                document.getElementById("tile" + String(num)).innerText = "O";
+
+                emptyTiles.splice(emptyTiles.indexOf(num), 1);
+            } else {
+                makeRandomMove();
+            }
+        }
+
+        function basicMove() {
+            if (makeWinningMove() != false) {
+                document.getElementById("tile" + String(makeWinningMove())).innerText = "O";
+            } else {
+                if (blockOpponent() != false) {
+                    document.getElementById("tile" + String(blockOpponent())).innerText = "O";
+                } else {
+                    makeRandomMove();
+                }
+            }
+        }
+    </script>
+
+    <head>
+        <title>Tic-Tac-Toe</title>
+    </head>
+
+    <body onload="startGame();">
+        <div id="userWins">msg</div>
+
+        <table border="1">
+            <tr>
+                <td id="tile1" class="tile" onclick="makeMove(this);"></td>
+                <td id="tile2" class="tile" onclick="makeMove(this);"></td>
+                <td id="tile3" class="tile" onclick="makeMove(this);"></td>
+            </tr>
+            <tr>
+                <td id="tile4" class="tile" onclick="makeMove(this);"></td>
+                <td id="tile5" class="tile" onclick="makeMove(this);"></td>
+                <td id="tile6" class="tile" onclick="makeMove(this);"></td>
+            </tr>
+            <tr>
+                <td id="tile7" class="tile" onclick="makeMove(this);"></td>
+                <td id="tile8" class="tile" onclick="makeMove(this);"></td>
+                <td id="tile9" class="tile" onclick="makeMove(this);"></td>
+            </tr>
+    </body>
+</html>
