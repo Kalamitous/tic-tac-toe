@@ -176,6 +176,8 @@
                 } else {
                     if (makeWinningMove() != false) {
                        document.getElementById("tile" + String(makeWinningMove())).innerText = "O";
+                    } else if (blockOpponent() != false) {
+                       document.getElementById("tile" + String(blockOpponent())).innerText = "O";
                     } else if (counterCornerPattern() != false) {
                         counterCornerPattern();
                     } else {
