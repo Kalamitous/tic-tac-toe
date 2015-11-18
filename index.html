@@ -57,18 +57,20 @@
         }
 
         function makeMove(tile) {
-            if (gameOver == false) {
-                if (tile.innerText == "") {
-                    tile.innerText = document.turn;
+            if (document.turn == "X") {
+                if (gameOver == false) {
+                    if (tile.innerText == "") {
+                        tile.innerText = document.turn;
 
-                    var userMove = tile.getAttribute("id");
+                        var userMove = tile.getAttribute("id");
 
-                    userMove = userMove.replace("tile", "");
-                    userMove = Number(userMove);
+                        userMove = userMove.replace("tile", "");
+                        userMove = Number(userMove);
 
-                    switchTurn(userMove);
+                        switchTurn(userMove);
 
-                    emptyTiles.splice(emptyTiles.indexOf(userMove), 1);
+                        emptyTiles.splice(emptyTiles.indexOf(userMove), 1);
+                    }
                 }
             }
         }
@@ -105,7 +107,7 @@
             if (document.turn == "X") {
                 document.turn = "O";
 
-                compMove(userMove);
+                setTimeout(function() { compMove(userMove); }, 500);
             } else {
                 document.turn = "X";
             }
