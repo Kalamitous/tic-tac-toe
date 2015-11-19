@@ -325,13 +325,13 @@ function counterDiagonalPattern(tile) {
 function counterNyla() {
     var move = false;
 
-    if (getElementText("tile2") == "X" && getElementText("tile7") == "X" || getElementText("tile8") == "X" && getElementText("tile1") == "X") {
+    if (getElementText("tile2") == userTurn && getElementText("tile7") == userTurn || getElementText("tile8") == userTurn && getElementText("tile1") == userTurn) {
         move = 4;
-    } else if (getElementText("tile2") == "X" && getElementText("tile9") == "X" || getElementText("tile8") == "X" && getElementText("tile3") == "X") {
+    } else if (getElementText("tile2") == userTurn && getElementText("tile9") == userTurn || getElementText("tile8") == userTurn && getElementText("tile3") == userTurn) {
         move = 6;
-    } else if (getElementText("tile6") == "X" && getElementText("tile1") == "X" || getElementText("tile4") == "X" && getElementText("tile3") == "X") {
+    } else if (getElementText("tile6") == userTurn && getElementText("tile1") == userTurn || getElementText("tile4") == userTurn && getElementText("tile3") == userTurn) {
         move = 2;
-    } else if (getElementText("tile6") == "X" && getElementText("tile7") == "X" || getElementText("tile4") == "X" && getElementText("tile9") == "X") {
+    } else if (getElementText("tile6") == userTurn && getElementText("tile7") == userTurn || getElementText("tile4") == userTurn && getElementText("tile9") == userTurn) {
         move = 8;
     }
 
@@ -345,19 +345,19 @@ function counterNyla() {
 function counterCornerPattern() {
     var move = false;
 
-    if (getElementText("tile2") == "X" && getElementText("tile4") == "X") {
+    if (getElementText("tile2") == userTurn && getElementText("tile4") == userTurn) {
         if (getElementText("tile1") == "") {
             move = 1;
         }
-    } else if (getElementText("tile2") && getElementText("tile6") == "X") {
+    } else if (getElementText("tile2") && getElementText("tile6") == userTurn) {
         if (getElementText("tile3") == "") {
             move = 3;
         }
-    } else if (getElementText("tile4") && getElementText("tile8") == "X") {
+    } else if (getElementText("tile4") && getElementText("tile8") == userTurn) {
         if (getElementText("tile7") == "") {
             move = 7;
         }
-    } else if (getElementText("tile6") && getElementText("tile8") == "X") {
+    } else if (getElementText("tile6") && getElementText("tile8") == userTurn) {
         if (getElementText("tile9") == "") {
             move = 9;
         }
@@ -399,19 +399,19 @@ function userDiagonalPattern(tile) {
     var diagonalPattern = false;
 
     if (tile == 1) {
-        if (getElementText("tile9") == "O") {
+        if (getElementText("tile9") == compTurn) {
             diagonalPattern = true;
         }
     } else if (tile == 9) {
-        if (getElementText("tile1") == "O") {
+        if (getElementText("tile1") == compTurn) {
             diagonalPattern = true;
         }
     } else if (tile == 3) {
-        if (getElementText("tile7") == "O") {
+        if (getElementText("tile7") == compTurn) {
             diagonalPattern = true;
         }
     } else if (tile == 7) {
-        if (getElementText("tile3") == "O") {
+        if (getElementText("tile3") == compTurn) {
             diagonalPattern = true;
         }
     }
