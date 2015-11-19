@@ -41,12 +41,16 @@
 
             document.turn = "X";
 
-            document.getElementById("userWins").innerText = "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies);
+            editElementText("userWins", "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies))
 
             for (var i = 1; i <= 9; i++) {
                 document.getElementById("tile" + String(i)).innerText = "";
                 document.getElementById("tile" + String(i)).style.backgroundColor = "white";
             }
+        }
+
+        function editElementText(id, text) {
+            document.getElementById(id).innerText = text;
         }
 
         function makeMove(tile) {
