@@ -47,6 +47,7 @@ function startGame() {
     emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     setElementText("userWins", "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies));
+    setElementText("turnNotifier", "You play as " + userTurn);
 
     for (var i = 1; i <= 9; i++) {
         setElementText("tile" + String(i), "");
