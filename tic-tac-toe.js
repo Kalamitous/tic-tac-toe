@@ -6,8 +6,8 @@ var numTies = 0;
 var totalMoves = 0;
 var gameOver = false;
 
-var userTurn = "X";
-var compTurn = "O";
+var userTurn = "O";
+var compTurn = "X";
 
 var curTurn = "X";
 
@@ -51,6 +51,10 @@ function startGame() {
     for (var i = 1; i <= 9; i++) {
         setElementText("tile" + String(i), "");
         setElementBackgroundColor("tile" + String(i), "white");
+    }
+
+    if (compTurn == curTurn) {
+        setTimeout(function() { compMove("none"); }, 500);
     }
 }
 
@@ -147,47 +151,77 @@ function checkWin() {
 
 //"Brain" of the bot
 function compMove(userMove) {
-    if (totalMoves == 1) {
-        if (userMove == 5) {
-            counterMiddleAtOne();
-        } else {
-            moveMiddleAtOne();
-        }
-    } else if (totalMoves == 3) {
-        if (userMove == 1 || userMove == 3 || userMove == 7 || userMove == 9) {
-            if (userAdjacentPattern(userMove)) {
-                if (getElementText("tile5") == compTurn) {
-                    counterAdjacentPattern();
-                } else {
-                    makeBasicMove();
-                }
-            } else if (userDiagonalPattern(userMove)) {
-                if (getElementText("tile5") == userTurn) {
-                    counterDiagonalPattern(userMove);
-                } else {
-                    makeBasicMove();
-                }
-            } else if (counterNyla() != false) {
-                counterNyla();
+    if (compTurn == "X") {
+        if (totalMoves == 0) {
+            moveMiddle();
+        } else if (totalMoves == 2) {
+            if (userMove == 2 || userMove == 4 || userMove == 6 || userMove == 8) {
+                counterSideAtZero(userMove);
+            } else {
+                counterCornerMove(userMove);
+            }
+        } else if (totalMoves == 4) {
+            if (makeWinningMove() != false) {
+                makeWinningMove();
+            } else if (makeBlockingMove() != false) {
+                makeBlockingMove();
+            } else if (trapTrianglePattern() != false) {
+                trapTrianglePattern();
             } else {
                 makeBasicMove();
             }
-        } else {
-            if (counterCornerPattern() != false) {
+        } else if (totalMoves > 2 && totalMoves % 2 == 0) {
+            if (makeWinningMove() != false) {
+                makeWinningMove();
+            } else if (makeBlockingMove() != false) {
+                makeBlockingMove();
+            } else {
+                makeBasicMove();
+            }
+        }
+    } else {
+        if (totalMoves == 1) {
+            if (userMove == 5) {
+                counterMiddleAtOne();
+            } else {
+                moveMiddle();
+            }
+        } else if (totalMoves == 3) {
+            if (userMove == 1 || userMove == 3 || userMove == 7 || userMove == 9) {
+                if (userAdjacentPattern(userMove)) {
+                    if (getElementText("tile5") == compTurn) {
+                        counterAdjacentPattern();
+                    } else {
+                        makeBasicMove();
+                    }
+                } else if (userDiagonalPattern(userMove)) {
+                    if (getElementText("tile5") == userTurn) {
+                        counterDiagonalPattern(userMove);
+                    } else {
+                        makeBasicMove();
+                    }
+                } else if (counterTrianglePattern() != false) {
+                    counterTrianglePattern();
+                } else {
+                    makeBasicMove();
+                }
+            } else {
+                if (counterCornerPattern() != false) {
+                    counterCornerPattern();
+                } else {
+                    makeBasicMove();
+                }
+            }
+        } else if (totalMoves > 3 && totalMoves % 2 == 1) {
+            if (makeWinningMove() != false) {
+                makeWinningMove();
+            } else if (makeBlockingMove() != false) {
+                makeBlockingMove();
+            } else if (counterCornerPattern() != false) {
                 counterCornerPattern();
             } else {
                 makeBasicMove();
             }
-        }
-    } else if (totalMoves > 3 && totalMoves % 2 == 1) {
-        if (makeWinningMove() != false) {
-            makeWinningMove();
-        } else if (makeBlockingMove() != false) {
-            makeBlockingMove();
-        } else if (counterCornerPattern() != false) {
-            counterCornerPattern();
-        } else {
-            makeBasicMove();
         }
     }
 }
@@ -279,17 +313,74 @@ function makeRandomMove() {
     }
 }
 
+//Traps
+//-X
+function trapTrianglePattern() {
+    var move = false;
+
+    if (getElementText("tile2") == userTurn && getElementText("tile7") == userTurn || getElementText("tile4") == userTurn && getElementText("tile3") == userTurn) {
+        move = 9;
+    } else if (getElementText("tile2") == userTurn && getElementText("tile9") == userTurn || getElementText("tile6") == userTurn && getElementText("tile1") == userTurn) {
+        move = 7;
+    } else if (getElementText("tile6") == userTurn && getElementText("tile7") == userTurn || getElementText("tile8") == userTurn && getElementText("tile3") == userTurn) {
+        move = 1;
+    } else if (getElementText("tile8") == userTurn && getElementText("tile1") == userTurn || getElementText("tile4") == userTurn && getElementText("tile9") == userTurn) {
+        move = 3;
+    }
+
+    if (move != false) {
+        makeMove(move, "comp")
+    }
+
+    return move;
+}
+
 //-Counter attacks
+//--Shared
+function moveMiddle() {
+    makeMove(5, "comp");
+}
+
+//--X
+function counterSideAtZero(tile) {
+    var move;
+
+    if (tile == 2) {
+        move = 7;
+    } else if (tile == 4) {
+        move = 9;
+    } else if (tile == 6) {
+        move = 1;
+    } else if (tile == 8) {
+        move = 3;
+    }
+
+    makeMove(move, "comp");
+}
+
+function counterCornerMove(tile) {
+    var move;
+
+    if (tile == 1) {
+        move = 9;
+    } else if (tile == 3) {
+        move = 7;
+    } else if (tile == 7) {
+        move = 3;
+    } else if (tile == 9) {
+        move = 1;
+    }
+
+    makeMove(move, "comp");
+}
+
+//--O
 function counterMiddleAtOne() {
     var possibleMoves = [1, 3, 7, 9];
 
     var move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
 
     makeMove(move, "comp");
-}
-
-function moveMiddleAtOne() {
-    makeMove(5, "comp");
 }
 
 function counterAdjacentPattern() {
@@ -322,7 +413,7 @@ function counterDiagonalPattern(tile) {
     }
 }
 
-function counterNyla() {
+function counterTrianglePattern() {
     var move = false;
 
     if (getElementText("tile2") == userTurn && getElementText("tile7") == userTurn || getElementText("tile8") == userTurn && getElementText("tile1") == userTurn) {
