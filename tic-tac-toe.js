@@ -425,6 +425,7 @@ function counterAdjacentPattern() {
 }
 
 function counterDiagonalPattern(tile) {
+    var move = false;
     var possibleMoves;
 
     if (tile == 1 || tile == 9) {
@@ -433,13 +434,15 @@ function counterDiagonalPattern(tile) {
         possibleMoves = [1, 9];
     }
 
-    var move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+    move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
 
     if (getElementText("tile" + String(move)) == "") {
         makeMove(move, "comp");
     } else {
         makeBasicMove();
     }
+    
+    return move;
 }
 
 function counterTrianglePattern() {
