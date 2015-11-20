@@ -37,6 +37,10 @@ function setElementBackgroundColor(id, col) {
     document.getElementById(String(id)).style.backgroundColor = col;
 }
 
+function getElementBackgroundColor(id, col) {
+    return document.getElementById(String(id)).style.backgroundColor;
+}
+
 //Game mechanics
 function startGame() {
     totalMoves = 0;
@@ -45,6 +49,14 @@ function startGame() {
     curTurn = "X";
 
     emptyTiles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    if (userTurn == "X") {
+        userTurn = "O";
+        compTurn = "X";
+    } else {
+        userTurn = "X";
+        compTurn = "O";
+    }
 
     setElementText("userWins", "Your Wins: " + String(userWins) + " | Computer Wins: " + String(compWins) + " | Ties: " + String(numTies));
     setElementText("turnNotifier", "You play as " + userTurn);
@@ -109,6 +121,16 @@ function switchTurn(userMove) {
             curTurn = "X";
         }
 
+        if (userTurn != curTurn) {
+            for (var i = 1; i <= 9; i++) {
+                setElementBackgroundColor("tile" + String(i), "#e0e0e0");
+            }
+        } else {
+            for (var i = 1; i <= 9; i++) {
+                setElementBackgroundColor("tile" + String(i), "white");
+            }
+        }
+
         if (curTurn == compTurn) {
             setTimeout(function() { compMove(userMove); }, 500);
         }
@@ -141,6 +163,12 @@ function checkWin() {
         setElementBackgroundColor(tile1, "#2ecc71");
         setElementBackgroundColor(tile2, "#2ecc71");
         setElementBackgroundColor(tile3, "#2ecc71");
+
+        for (var i = 1; i <= 9; i++) {
+            if ("tile" + String(i) != tile1 && "tile" + String(i) != tile2 && "tile" + String(i) != tile3) {
+                setElementBackgroundColor("tile" + String(i), "#e0e0e0");
+            }
+        }
     }
 
     if (result == false && emptyTiles.length == 0) {
