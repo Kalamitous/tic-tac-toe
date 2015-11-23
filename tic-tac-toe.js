@@ -484,7 +484,7 @@ function counterCornerPattern() {
     }
 
     if (move != false) {
-        makeMove(tile, "comp");
+        makeMove(move, "comp");
     }
 
     return move;
